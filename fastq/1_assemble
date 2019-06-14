@@ -1,0 +1,25 @@
+Assembling initial clonotypes: 0.1%
+Assembling initial clonotypes: 21.7%  ETA: 00:00:03
+Assembling initial clonotypes: 65.8%  ETA: 00:00:00
+Mapping low quality reads: 8.1%
+Mapping low quality reads: 72.5%  ETA: 00:00:00
+Clustering: 0.7%
+Building clones: 8.9%  ETA: 00:00:11
+Writing clones: 0%
+============= Report ==============
+Analysis time: 9.69s
+Final clonotype count: 910
+Average number of reads per clonotype: 31.09
+Reads used in clonotypes, percent of total: 28291 (68.07%)
+Reads used in clonotypes before clustering, percent of total: 28906 (69.55%)
+Number of reads used as a core, percent of used: 28525 (98.68%)
+Mapped low quality reads, percent of used: 381 (1.32%)
+Reads clustered in PCR error correction, percent of used: 615 (2.13%)
+Reads pre-clustered due to the similar VJC-lists, percent of used: 0 (0%)
+Reads dropped due to the lack of a clone sequence: 127 (0.31%)
+Reads dropped due to low quality: 0 (0%)
+Reads dropped due to failed mapping: 476 (1.15%)
+Reads dropped with low quality clones: 0 (0%)
+Clonotypes eliminated by PCR error correction: 568
+Clonotypes dropped as low quality: 0
+Clonotypes pre-clustered due to the similar VJC-lists: 0

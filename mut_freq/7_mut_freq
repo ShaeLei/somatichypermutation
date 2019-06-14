@@ -1,0 +1,14 @@
+Parental	Mutation	Frequency
+A	C	0
+A	T	3
+A	G	17
+T	C	17
+T	A	3
+T	G	1
+C	A	2
+C	T	10
+C	G	1
+G	A	14
+G	T	6
+G	C	1
+Total mutation: 75
