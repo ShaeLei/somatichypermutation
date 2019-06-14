@@ -3,27 +3,20 @@ import os
 import glob
 import sys
 
-if len(sys.argv)!=2:
+def blast_against_parental_seq(result_dir, parental_fasta_fn):
+    if not os.path.exists(result_dir+'blast/'):
+        os.mkdir(result_dir+'blast/')
+
+    for fastafn in glob.glob(result_dir+'fasta/*.fasta'):
+        blastfn = fastafn.replace('fasta', 'blast')
+        os.system('blastn -query '+parental_fasta_fn+' -subject '+fastafn+' -task blastn -max_target_seqs 1000 -out '+blastfn+' -outfmt \"6 sseq qstart qend\"')
+
+
+if len(sys.argv)!=3 and len(sys.argv)!=2:
+    print sys.argv[0]+' <result_folder> <parental_fasta_file>'
     sys.exit(0)
 
-wd = sys.argv[1]+'/'
+result_dir = sys.argv[1]+'/'
+parental_fasta_fn = 'script/parental.fasta'
 
-filelist = []
-for fn in glob.glob(wd+'fasta/*.fasta'):
-    filelist.append(fn.split('/')[-1].split('.')[0])
-
-if not os.path.exists(wd+'blast/'):
-    os.mkdir(wd+'blast/')
-
-# this script is to blast all seqs to the parental.
-#filelist = []
-
-#for (dirpath, dirnames, filenames) in os.walk('fasta'):
-#    name = filenames[0:filenames.find('.')]
-#    filelist.extend(name)
-
-for name in filelist: 
-    cmd = "blastn -query script/parental.fasta -subject " + wd + "fasta/" + name + ".fasta -task blastn -max_target_seqs 1000 -out " + wd + "blast/" + name + "_blast -outfmt \"6 sseq qstart qend\""
-    os.system( cmd )
-
-
+blast_against_parental_seq(result_dir, parental_fasta_fn)

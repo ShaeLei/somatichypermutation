@@ -1,53 +1,43 @@
 #! usr/bin/python
 import os
 import sys
+import glob
+
+
+def compare_blast_results_to_parental_seq(result_dir, parental_fasta_fn):
+    with open(parental_fasta_fn) as f:
+        f.readline()
+        parentalseq = f.readline().strip()
+
+    if not os.path.exists(result_dir+'cmpr/'):
+        os.mkdir(result_dir+'cmpr/')
+
+    for blastfn in glob.glob(result_dir+'blast/*.blast'):
+        with open(blastfn) as f:
+            blastlines = f.readlines()
+        cmprfn = blastfn.replace('blast', 'cmpr')
+        with open(cmprfn,'w') as f:
+            for line in blastlines:
+                seq, qstart, qend = line.split()
+                qstart = int(qstart)
+                qend = int(qend)
+                seq = '-'*(qstart-1)+seq
+                diff = ''
+                for i in range(qend):
+                    if seq[i] == parentalseq[i]:
+                        diff += '-'
+                    else:
+                        diff += seq[i]
+                f.write(diff+'\n')
+
 
 if len(sys.argv)!=2:
     sys.exit(0)
 
 
-wd = sys.argv[1]+'/'
-
-
-if not os.path.exists(wd+'cmpr/'):
-    os.mkdir(wd+'cmpr/')
-
-def cmpr(name):
-    paren = 'CTACTGGGGTCAAGGAACCTCAGTCACCGTCTCCTCAGGTAAGAATGGCCTCTCCAGGTCTTTATTTTTAACCTTTGTTATGGAGTTTTCTGAGCATTGCAGACTAATCTTGGATATTTGTCCCTGAGGGAGCCGGCTGAGAGAAGTTGGGAAATAAACTGTCTAGGGATCTCAGAGCCT'
-    
-    with open(wd+'blast/' + name + '_blast', 'r') as f:
-        lines = f.readlines()
-    outf = open(wd+'cmpr/' + name + '_cmpr', 'w')
-    
-    
-    for i in range(len(lines)):
-        line = lines[i].strip().split('\t')
-        seq = line[0]
-        qstart = int(line[1])
-        qend = int(line[2])
-        son = ''
-        if qstart > 1:
-            seq = '-'*(qstart-1) + seq
-        for j in range(qend):
-            if seq[j] == paren[j]:
-                son = son + '-'
-            else:
-                son = son + seq[j]
-        outf.write(son + '\n')
-    
-    outf.close()
-
-
-import glob
-
-filelist = []
-for fn in glob.glob(wd+'blast/*_blast'):
-    filelist.append(fn.split('/')[-1].split('_bla')[0])
-
-for name in filelist:
-    cmpr(name)
+result_dir = sys.argv[1]+'/'
+parental_fasta_fn = 'script/parental.fasta'
 
 
 
-
-
+compare_blast_results_to_parental_seq(result_dir, parental_fasta_fn)
